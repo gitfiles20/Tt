@@ -1,1 +1,29 @@
+name: 2
 
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */4 * * *'  # adjust as needed
+
+jobs:
+  stream1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Run
+        env:
+          STREAM_URL: ${{ secrets.STREAM_URL }}
+          RTMP_URL: ${{ secrets.RTMP_URL }}
+        run: bash -c "${{ secrets.STREAM_CMD_1 }}"
+
+      - name: T2
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: "1.yml"
+          repo: ${{ github.repository }}
+          token: ${{ secrets.GITHUB_TOKEN }}
