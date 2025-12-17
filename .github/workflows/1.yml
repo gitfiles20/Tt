@@ -17,9 +17,9 @@ jobs:
 
       - name: Run
         env:
-          STREAM_URL: ${{ secrets.STREAM_URL }}
-          RTMP_URL: ${{ secrets.RTMP_URL }}
-        run: bash -c "${{ secrets.STREAM_CMD_1 }}"
+          STREAM_URL: ${{ secrets.S_URL }}
+          RTMP_URL: ${{ secrets.R_URL }}
+        run: bash -c "${{ secrets.CMX_1 }}"
 
       - name: T2
         uses: benc-uk/workflow-dispatch@v1
