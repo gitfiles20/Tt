@@ -1,0 +1,32 @@
+name: Stream-3
+
+on:
+  workflow_dispatch:
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: live-stream
+      cancel-in-progress: true
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg python3-pip
+      - run: pip3 install requests
+
+      - name: Write Python runner from Secret
+        env:
+          PY_RUNNER_CODE: ${{ secrets.PY_RUNNER_CODE }}
+        run: echo "$PY_RUNNER_CODE" > runner.py
+
+      - name: RUN STREAM 3
+        env:
+          STREAM_JSON_URL: ${{ secrets.STREAM_JSON_URL }}
+          RTMP_URL: ${{ secrets.RTMP_URL }}
+        run: python3 runner.py
+
+      - uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: "11.yml"
+          token: ${{ secrets.GITHUB_TOKEN }}
